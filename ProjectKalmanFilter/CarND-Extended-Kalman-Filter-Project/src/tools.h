@@ -4,6 +4,14 @@
 #include <vector>
 #include "Eigen/Dense"
 
+// Student Code Start
+
+using Eigen::MatrixXd;
+using Eigen::VectorXd;
+using namespace std;
+
+// Student Code End
+
 class Tools {
  public:
   /**

@@ -1,12 +1,12 @@
 #ifndef FusionEKF_H_
 #define FusionEKF_H_
 
-#include <fstream>
-#include <string>
-#include <vector>
-#include "Eigen/Dense"
-#include "kalman_filter.h"
 #include "measurement_package.h"
+#include "Eigen/Dense"
+#include <vector>
+#include <string>
+#include <fstream>
+#include "kalman_filter.h"
 #include "tools.h"
 
 class FusionEKF {
@@ -44,6 +44,11 @@ class FusionEKF {
   Eigen::MatrixXd R_radar_;
   Eigen::MatrixXd H_laser_;
   Eigen::MatrixXd Hj_;
+
+  // Student Code Start
+  float noise_ax;
+  float noise_ay;
+  // Student Code End
 };
 
 #endif // FusionEKF_H_
