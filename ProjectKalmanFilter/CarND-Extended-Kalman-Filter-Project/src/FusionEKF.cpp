@@ -107,7 +107,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       // TODO: Initialize state.
       // Lidar will be giving distance to the object
       const double px = measurement_pack.raw_measurements_(0);
-      const double py = measurement_pack.raw_measurements_(1)
+      const double py = measurement_pack.raw_measurements_(1);
       ekf_.x_ << px, 
                  py, 
                  0, 
