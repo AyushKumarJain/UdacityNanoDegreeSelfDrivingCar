@@ -1,13 +1,20 @@
-#include <math.h>
 #include <uWS/uWS.h>
 #include <iostream>
-#include <string>
 #include "json.hpp"
 #include "PID.h"
+#include <math.h>
+
+#include <string>
+
 
 // for convenience
 using nlohmann::json;
 using std::string;
+
+// Student Code Starts
+// for convenience
+// using json = nlohmann::json;
+// Student Code Ends
 
 // For converting back and forth between radians and degrees.
 constexpr double pi() { return M_PI; }
@@ -37,6 +44,8 @@ int main() {
   /**
    * TODO: Initialize the pid variable.
    */
+  // Using Init function of PID class to initialise Kp, Ki, Kd.
+  pid.Init(0.1, 0.001, 1);
 
   h.onMessage([&pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, 
                      uWS::OpCode opCode) {
@@ -63,6 +72,12 @@ int main() {
            * NOTE: Feel free to play around with the throttle and speed.
            *   Maybe use another PID controller to control the speed!
            */
+          pid.UpdateError(cte);
+          steer_value = - pid.TotalError();
+          
+          // As steer value is limited to -1 to 1. 
+          if(steer_value > 1) {steer_value = 1;}
+          else if(steer_value < -1) {steer_value = -1;}
           
           // DEBUG
           std::cout << "CTE: " << cte << " Steering Value: " << steer_value 
