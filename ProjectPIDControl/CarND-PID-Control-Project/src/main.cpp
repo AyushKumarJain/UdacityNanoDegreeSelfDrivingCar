@@ -45,7 +45,7 @@ int main() {
    * TODO: Initialize the pid variable.
    */
   // Using Init function of PID class to initialise Kp, Ki, Kd.
-  pid.Init(0.1, 0.001, 1);
+  pid.Init(18.0, 0.002, 20.0);
 
   h.onMessage([&pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, 
                      uWS::OpCode opCode) {
