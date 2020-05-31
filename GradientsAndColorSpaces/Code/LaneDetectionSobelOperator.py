@@ -16,13 +16,23 @@ def abs_sobel_thresh(img, orient='x', thresh_min=0, thresh_max=255):
     
     # Apply the following steps to img
     # 1) Convert to grayscale
+    gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
     # 2) Take the derivative in x or y given orient = 'x' or 'y'
     # 3) Take the absolute value of the derivative or gradient
+    if orient == 'x':
+        abs_sobel = np.absolute(cv2.Sobel(gray, cv2.CV_64F, 1, 0))
+    if orient == 'y':
+        abs_sobel = np.absolute(cv2.Sobel(gray, cv2.CV_64F, 0, 1))
     # 4) Scale to 8-bit (0 - 255) then convert to type = np.uint8
+    scaled_sobel = np.uint8(255*abs_sobel/np.max(abs_sobel))
+    # Create a copy and apply the threshold
+    binary_output = np.zeros_like(scaled_sobel)
     # 5) Create a mask of 1's where the scaled gradient magnitude 
             # is > thresh_min and < thresh_max
+    # Here I'm using inclusive (>=, <=) thresholds, but exclusive is ok too
+    binary_output[(scaled_sobel >= thresh_min) & (scaled_sobel <= thresh_max)] = 1
     # 6) Return this mask as your binary_output image
-    binary_output = np.copy(img) # Remove this line
+    # binary_output = np.copy(img) # Remove this line
     return binary_output
     
 # Run the function
