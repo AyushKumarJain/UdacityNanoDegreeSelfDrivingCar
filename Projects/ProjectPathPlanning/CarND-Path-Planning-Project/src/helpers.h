@@ -185,7 +185,7 @@ vector<bool>  GetObsInfo(vector<vector<double>> sensor_fusion, int prev_path_siz
   bool obs_front = false;
   bool obs_left = false;
   bool obs_right = false;
-  int safe_dist = 13;
+  int safe_dist = 20;
 
   for ( int i = 0; i < sensor_fusion.size(); i++ )
   {

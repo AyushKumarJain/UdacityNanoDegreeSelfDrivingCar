@@ -1,0 +1,11 @@
+# Warning suppression file for the buildbot.
+
+# Suppress CPLEX/Concert warnings:
+.*/ilosatomi.h: null character\(s\) ignored
+.*/ilomodel.h: private field '.*' is not used
+.*/(iloexpressioni|cp).h: C4244: 'argument' : conversion from 'IloInt' to 'IloNum'
+.*concert.lib: LNK4099: PDB 'concert.pdb' was not found.*
+.*: could not create compact unwind
+.*/printf.c: ignoring return value of 'strtod', declared with attribute warn_unused_result
+
+.*: [0-9]+ warning(s)? generated

@@ -1,0 +1,3 @@
+20140525
+  tableproxy.c: Read_ampl_proxy: when table reading is finished and
+TI->Errmsg is set, return DB_Error rather than DB_Done.

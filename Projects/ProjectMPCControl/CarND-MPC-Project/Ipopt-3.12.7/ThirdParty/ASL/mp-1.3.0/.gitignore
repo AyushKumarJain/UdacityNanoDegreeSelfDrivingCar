@@ -1,0 +1,10 @@
+/bin
+/lib
+build
+CMakeCache.txt
+CMakeFiles
+cmake_install.cmake
+CTestTestfile.cmake
+Makefile
+Testing
+*.pyc
