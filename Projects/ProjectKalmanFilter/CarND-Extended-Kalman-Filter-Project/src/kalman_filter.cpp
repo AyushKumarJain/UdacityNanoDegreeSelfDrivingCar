@@ -18,6 +18,7 @@ KalmanFilter::KalmanFilter() {
     //cout<<"Kalman Filter constructor running...\n"<<endl;
 }
 
+// Deconstructor
 KalmanFilter::~KalmanFilter() {}
 
 // void KalmanFilter::Init(VectorXd &x_in, MatrixXd &P_in, MatrixXd &F_in,

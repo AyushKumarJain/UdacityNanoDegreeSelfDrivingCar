@@ -1,11 +1,12 @@
 #ifndef FusionEKF_H_
 #define FusionEKF_H_
 
-#include "measurement_package.h"
 #include "Eigen/Dense"
 #include <vector>
 #include <string>
 #include <fstream>
+// It is important to define to use objects from Kalman Filter and Tools class
+#include "measurement_package.h"
 #include "kalman_filter.h"
 #include "tools.h"
 
@@ -24,7 +25,7 @@ class FusionEKF {
   /**
    * Run the whole flow of the Kalman Filter from here.
    */
-  void ProcessMeasurement(const MeasurementPackage &measurement_pack);
+  void ProcessMeasurement(const MeasurementPackage &measurement_pack); // pass by reference 
 
   /**
    * Kalman Filter update and prediction math lives in here.
