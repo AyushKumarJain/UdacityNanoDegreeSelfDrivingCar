@@ -71,6 +71,7 @@ int NextWaypoint(double x, double y, double theta, const vector<double> &maps_x,
   double angle = fabs(theta-heading);
   angle = std::min(2*pi() - angle, angle);
 
+//   if(angle > pi()/4) {
   if (angle > pi()/2) {
     ++closestWaypoint;
     if (closestWaypoint == maps_x.size()) {
@@ -153,5 +154,88 @@ vector<double> getXY(double s, double d, const vector<double> &maps_s,
 
   return {x,y};
 }
+
+// Student Code Start
+
+// Calculate target lane from frenet d value
+int CalculateObstacleLane(float d)
+{
+  int obs_lane = -1;
+
+  // Determine target vehicle's lane
+  if ( d > 0 && d < 4 )
+  {
+    obs_lane = 0; // Left lane
+  }
+  else if ( d > 4 && d < 8 )
+  {
+    obs_lane = 1; // Middle lane
+  }
+  else if ( d > 8 && d < 12 )
+  {
+    obs_lane = 2; // Right lane
+  }
+  return obs_lane;
+}
+
+vector<bool>  GetObsInfo(vector<vector<double>> sensor_fusion, int prev_path_size, double car_s, int lane) 
+{
+
+  // Check for the location of obstacles. 
+  bool obs_front = false;
+  bool obs_left = false;
+  bool obs_right = false;
+  int safe_dist = 13;
+
+  for ( int i = 0; i < sensor_fusion.size(); i++ )
+  {
+    float d = sensor_fusion[i][6];
+
+    // Calculate target vehicle's lane
+    int obs_lane = CalculateObstacleLane(d);
+    if (obs_lane < 0)
+    {
+      continue;
+    }
+
+    // Calculate car speed
+    double vx = sensor_fusion[i][3];
+    double vy = sensor_fusion[i][4];
+    double obs_speed = sqrt(vx*vx + vy*vy);
+    double obs_s = sensor_fusion[i][5];
+
+    // Determine obstacle's s position at the end of current cycle
+    obs_s += ((double)prev_path_size*0.02*obs_speed);
+
+    // Determine if the obstacle is in front, left or right of ego vehicle
+    if(obs_lane==lane) 
+    {
+      // Obstacle is in ego lane, check if collision is imminent
+      if(obs_s>car_s && (obs_s-car_s)<safe_dist)
+      {
+        obs_front = true;
+      }
+    }
+    else if(obs_lane-lane == 1)
+    {
+      // Obstacle is in right lane, check if it's unsafe to change lane right
+      if((car_s-safe_dist)<obs_s && (car_s+safe_dist)>obs_s)
+      {
+        obs_right = true;
+      }
+    }
+    else if(obs_lane-lane == -1)
+    {
+      // Obstacle is in the left lane, check if it's unsafe to change lane left
+      if((car_s-safe_dist)<obs_s && (car_s+safe_dist)>obs_s)
+      {
+        obs_left = true;
+      }
+    }
+  }
+  return {obs_front, obs_left, obs_right};
+}
+
+// Student Code End
 
 #endif  // HELPERS_H

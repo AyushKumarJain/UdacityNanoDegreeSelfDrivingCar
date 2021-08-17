@@ -1,4 +1,7 @@
 {
     "cmake.configureOnOpen": true,
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "files.associations": {
+        "string": "cpp"
+    }
 }

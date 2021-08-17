@@ -9,7 +9,7 @@
 
 // for convenience
 using nlohmann::json;
-using std::string;
+// using std::string;
 
 // Student Code Starts
 // for convenience
@@ -24,14 +24,14 @@ double rad2deg(double x) { return x * 180 / pi(); }
 // Checks if the SocketIO event has JSON data.
 // If there is data the JSON object in string format will be returned,
 // else the empty string "" will be returned.
-string hasData(string s) {
+std::string hasData(std::string s) {
   auto found_null = s.find("null");
   auto b1 = s.find_first_of("[");
   auto b2 = s.find_last_of("]");
-  if (found_null != string::npos) {
+  if (found_null != std::string::npos) {
     return "";
   }
-  else if (b1 != string::npos && b2 != string::npos) {
+  else if (b1 != std::string::npos && b2 != std::string::npos) {
     return s.substr(b1, b2 - b1 + 1);
   }
   return "";
@@ -45,7 +45,7 @@ int main() {
    * TODO: Initialize the pid variable.
    */
   // Using Init function of PID class to initialise Kp, Ki, Kd.
-  pid.Init(18.0, 0.002, 20.0);
+  pid.Init(0.2, 0.002, 7.0);
 
   h.onMessage([&pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, 
                      uWS::OpCode opCode) {
@@ -53,18 +53,18 @@ int main() {
     // The 4 signifies a websocket message
     // The 2 signifies a websocket event
     if (length && length > 2 && data[0] == '4' && data[1] == '2') {
-      auto s = hasData(string(data).substr(0, length));
+      auto s = hasData(std::string(data).substr(0, length));
 
       if (s != "") {
         auto j = json::parse(s);
 
-        string event = j[0].get<string>();
+        std::string event = j[0].get<std::string>();
 
         if (event == "telemetry") {
           // j[1] is the data JSON object
-          double cte = std::stod(j[1]["cte"].get<string>());
-          double speed = std::stod(j[1]["speed"].get<string>());
-          double angle = std::stod(j[1]["steering_angle"].get<string>());
+          double cte = std::stod(j[1]["cte"].get<std::string>());
+          // double speed = std::stod(j[1]["speed"].get<std::string>());
+          // double angle = std::stod(j[1]["steering_angle"].get<std::string>());
           double steer_value;
           /**
            * TODO: Calculate steering value here, remember the steering value is
@@ -92,11 +92,26 @@ int main() {
         }  // end "telemetry" if
       } else {
         // Manual driving
-        string msg = "42[\"manual\",{}]";
+        std::string msg = "42[\"manual\",{}]";
         ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
       }
     }  // end websocket message if
   }); // end h.onMessage
+
+  // We don't need this since we're not using HTTP but if it's removed the program
+  // doesn't compile, I dont know why
+  h.onHttpRequest([](uWS::HttpResponse *res, uWS::HttpRequest req, char *data, size_t, size_t) {
+    const std::string s = "<h1>Hello world!</h1>";
+    if (req.getUrl().valueLength == 1)
+    {
+      res->end(s.data(), s.length());
+    }
+    else
+    {
+      // I guess this should be done more gracefully?
+      res->end(nullptr, 0);
+    }
+  });
 
   h.onConnection([&h](uWS::WebSocket<uWS::SERVER> ws, uWS::HttpRequest req) {
     std::cout << "Connected!!!" << std::endl;

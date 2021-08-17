@@ -26,6 +26,15 @@ struct Particle {
 
 
 class ParticleFilter {  
+  // // Number of particles to draw
+  // int num_particles; 
+
+  // // Flag, if filter is initialized
+  // bool is_initialized;
+
+  // // Vector of weights of all particles
+  // std::vector<double> weights;
+  
  public:
   // Constructor
   // @param num_particles Number of particles
@@ -105,7 +114,10 @@ class ParticleFilter {
   /**
    * Used for obtaining debugging information related to particles.
    */
+  
   std::string getAssociations(Particle best);
+  // std::string getSenseX(Particle best);
+  // std::string getSenseY(Particle best);
   std::string getSenseCoord(Particle best, std::string coord);
 
   // Set of current particles

@@ -140,6 +140,8 @@ int main() {
           msgJson["best_particle_associations"] = pf.getAssociations(best_particle);
           msgJson["best_particle_sense_x"] = pf.getSenseCoord(best_particle, "X");
           msgJson["best_particle_sense_y"] = pf.getSenseCoord(best_particle, "Y");
+          // msgJson["best_particle_sense_x"] = pf.getSenseX(best_particle);
+          // msgJson["best_particle_sense_y"] = pf.getSenseY(best_particle);
 
           auto msg = "42[\"best_particle\"," + msgJson.dump() + "]";
           // std::cout << msg << std::endl;
@@ -152,6 +154,17 @@ int main() {
     }  // end websocket message if
   }); // end h.onMessage
 
+  
+//   h.onHttpRequest([](uWS::HttpResponse *res, uWS::HttpRequest req, char *data, size_t, size_t) {
+//     const string s = "<h1>Hello world!</h1>";
+//     if (req.getUrl().valueLength == 1) {
+//       res->end(s.data(), s.length());
+//     }
+//     else {
+//       res->end(nullptr, 0);
+//     }
+//   });
+  
   h.onConnection([&h](uWS::WebSocket<uWS::SERVER> ws, uWS::HttpRequest req) {
     std::cout << "Connected!!!" << std::endl;
   });
